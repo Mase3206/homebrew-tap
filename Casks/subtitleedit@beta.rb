@@ -2,8 +2,8 @@
 #                https://docs.brew.sh/Adding-Software-to-Homebrew#cask-stanzas
 # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 cask "subtitleedit@beta" do
-  version "5.1.0-rc13"
-  sha256 "ce0aa9a7256b1f152bac8e26016a620b5d11c3fbc728359b03dafb7003eac93a"
+  version "5.3.0-beta10"
+  sha256 "9bec6605c59683ba9862150f4473c98d999b70ea1bbd6d59993225286dd346d0"
 
   url "https://github.com/SubtitleEdit/subtitleedit/releases/download/v#{version}/SubtitleEdit-macOS-ARM64.dmg"
   name "SubtitleEdit (beta)"
@@ -23,9 +23,12 @@ cask "subtitleedit@beta" do
   app "Subtitle Edit.app"
 
   # SubtitleEdit is currently unsigned.
-  postflight do
-    system "xattr", "-r", "-d", "com.apple.quarantine", "#{appdir}/Subtitle Edit.app"
-    system "codesign", "--force", "--deep", "--sign", "-", "#{appdir}/Subtitle Edit.app"
+  postflight_steps do
+    # system "xattr", "-r", "-d", "com.apple.quarantine", "{{appdir}}/Subtitle Edit.app"
+    # system "codesign", "--force", "--deep", "--sign", "-", "{{appdir}}/Subtitle Edit.app"
+
+    run "xattr", args: ["-r", "-d", "com.apple.quarantine", "{{appdir}}/Subtitle Edit.app"]
+    run "codesign", args: ["--force", "--deep", "--sign", "-", "{{appdir}}/Subtitle Edit.app"]
   end
 
   # Documentation: https://docs.brew.sh/Cask-Cookbook#stanza-zap
